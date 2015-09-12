@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public float hopSpeed = 4;
     private int targetSlot;
     private Vector3 targetPosition;
-    private int currentScore;
+    
     // Use this for initialization
     void Awake()
     {
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
         
     void Start()
     {
-        currentScore = 0;
+        
         ladderLayer = LayerMask.NameToLayer("Ladder");
         gameManager = GameManager.instance ;
         objectGenerator = ObjectGenerator.instance;
@@ -41,12 +41,14 @@ public class PlayerController : MonoBehaviour
             if ((hit = Physics2D.Raycast(this.transform.position, Vector3.forward, ladderLayer)))
             {
 
-                gameManager.UpdateScore(currentScore++);
+                
                 // Debug.Log(hit.collider.gameObject);
             }
             else
             {
                 Debug.Log("Dead");
+                //gameManager.GameOver();
+                
             }
             transform.position = Vector3.Lerp(transform.position, targetPosition, hopSpeed* Time.deltaTime);
         }
@@ -65,6 +67,7 @@ public class PlayerController : MonoBehaviour
     }
     public void ChangeSlots(int targetSlot)
     {
+        gameManager.IncrementScore();
         targetPosition = new Vector2 (objectGenerator.IndexToGlobalPosition(targetSlot).x, transform.position.y);
     }
 

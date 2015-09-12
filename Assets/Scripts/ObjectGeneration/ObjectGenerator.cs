@@ -11,7 +11,8 @@ public class ObjectGenerator : MonoBehaviour
     public float sqrHorizon;
     public float horizon {  get { return Mathf.Sqrt(sqrHorizon); } }
     public float adjacentOffset;
-
+    [MinMaxRangeAttribute(1,10)]
+    public MinMaxRange LadderSizeRange;
     //
     // The distance behind the camera that the objects will be removed and added back to the object pool
     public float removeHorizon = -25;
@@ -92,27 +93,31 @@ public class ObjectGenerator : MonoBehaviour
             prevPlatform = objectHistory.GetTopInfiniteObject(activeSlots);
 
             //Checking if a fake chain exists
-     
-                
-             prevFakePlatform = objectHistory.GetTopInfiniteObject(fakeSlot);
-            if (prevFakePlatform != null)
+
+
+      /*
+            if (Random.value > 0.5f)
             {
-                fakeSlot = GetNextActiveSlot(fakeSlot);
-                position = new Vector3(IndexToGlobalPosition(fakeSlot).x, prevFakePlatform.transform.position.y - adjacentOffset + Vector3.Dot(prevFakePlatform.GetSize(), Vector3.up), 0);
-                LadderObject fakeLadderObject = SpawnObjects(fakeSlot, position) as LadderObject;
-            }
-            else
-            {
-                prevFakePlatform = prevPlatform;
-                fakeSlot = GetNextFakeSlot(prevPlatform.Slot, activeSlots);
-                if(fakeSlot!=-99)
+                prevFakePlatform = objectHistory.GetTopInfiniteObject(fakeSlot);
+                if (prevFakePlatform != null)
                 {
+                    fakeSlot = GetNextActiveSlot(fakeSlot);
                     position = new Vector3(IndexToGlobalPosition(fakeSlot).x, prevFakePlatform.transform.position.y - adjacentOffset + Vector3.Dot(prevFakePlatform.GetSize(), Vector3.up), 0);
                     LadderObject fakeLadderObject = SpawnObjects(fakeSlot, position) as LadderObject;
                 }
+                else
+                {
+                    prevFakePlatform = prevPlatform;
+                    fakeSlot = GetNextFakeSlot(prevPlatform.Slot, activeSlots);
+                    if (fakeSlot != -99)
+                    {
+                        position = new Vector3(IndexToGlobalPosition(fakeSlot).x, prevFakePlatform.transform.position.y - adjacentOffset + Vector3.Dot(prevFakePlatform.GetSize(), Vector3.up), 0);
+                        LadderObject fakeLadderObject = SpawnObjects(fakeSlot, position) as LadderObject;
+                    }
+                }
             }
             
-           
+           */
 
             //******Fake SpawnAlgorithm
             
@@ -175,7 +180,7 @@ public class ObjectGenerator : MonoBehaviour
 
     private InfiniteObject2D SpawnObjects(int slot, Vector3 position)
     {
-        return SpawnLadder(slot, Random.Range(3,6), position);
+        return SpawnLadder(slot, LadderSizeRange.GetRandomValueInt(), position);
 
     }
     private void LadderSpawned(InfiniteObject2D infinteObject2D)

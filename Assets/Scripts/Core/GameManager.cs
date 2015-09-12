@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 {
 
 
-    public int currentScore;
+    public int currentScore = 0;
     public static GameManager instance;
     public GameState gameState = GameState.None;
     InfiniteObjectHistory objectHistory;
@@ -43,9 +43,10 @@ public class GameManager : MonoBehaviour
 
         return (gameState == GameState.Playing);
     }
-    public void UpdateScore(int score)
+   
+    public void StartGame()
     {
-        currentScore = score;
+        gameState = GameState.Playing;
     }
     // Update is called once per frame
     void Update()
@@ -65,4 +66,14 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
+    public int GetScore()
+    {
+        return currentScore;
+    }
+    public void IncrementScore()
+    {
+        currentScore++;
+    }
+   
 }
